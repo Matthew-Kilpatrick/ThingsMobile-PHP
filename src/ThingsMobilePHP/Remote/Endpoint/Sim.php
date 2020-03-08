@@ -8,6 +8,11 @@ use ThingsMobilePHP\Remote\Endpoint;
 
 class Sim extends Endpoint
 {
+  /**
+   * Get authentication (username+token) and SIM details (msisdn or iccid) array for making requests
+   * @param \ThingsMobilePHP\Models\Sim $sim
+   * @return array
+   */
   private function getSimAuthArray(\ThingsMobilePHP\Models\Sim $sim) : array
   {
     $arr = $this->getAuthArray();
@@ -26,6 +31,17 @@ class Sim extends Endpoint
     return $arr;
   }
 
+  /**
+   * Activate a specified SIM
+   * @param \ThingsMobilePHP\Models\Sim $sim Sim card model to activate
+   * @return bool Whether activation request was successful
+   * @throws \ThingsMobilePHP\Remote\Exception\GenericErrorException
+   * @throws \ThingsMobilePHP\Remote\Exception\InputErrorException
+   * @throws \ThingsMobilePHP\Remote\Exception\SharedCreditAccountErrorException
+   * @throws \ThingsMobilePHP\Remote\Exception\SimErrorException
+   * @throws \ThingsMobilePHP\Remote\Exception\TooManyRequestsException
+   * @throws \ThingsMobilePHP\Remote\Exception\UserErrorException
+   */
   public function activate(\ThingsMobilePHP\Models\Sim $sim) : bool
   {
     $client = $this->getHttpClient();
@@ -38,6 +54,17 @@ class Sim extends Endpoint
     return $this->parseNoneDataXml($req->getBody());
   }
 
+  /**
+   * Block a specified sim card
+   * @param \ThingsMobilePHP\Models\Sim $sim SIM card model to block
+   * @return bool Whether block request was successful
+   * @throws \ThingsMobilePHP\Remote\Exception\GenericErrorException
+   * @throws \ThingsMobilePHP\Remote\Exception\InputErrorException
+   * @throws \ThingsMobilePHP\Remote\Exception\SharedCreditAccountErrorException
+   * @throws \ThingsMobilePHP\Remote\Exception\SimErrorException
+   * @throws \ThingsMobilePHP\Remote\Exception\TooManyRequestsException
+   * @throws \ThingsMobilePHP\Remote\Exception\UserErrorException
+   */
   public function block(\ThingsMobilePHP\Models\Sim $sim) : bool
   {
     $client = $this->getHttpClient();
@@ -48,6 +75,17 @@ class Sim extends Endpoint
     return $this->parseNoneDataXml($req->getBody());
   }
 
+  /**
+   * Unblock a specified sim card
+   * @param \ThingsMobilePHP\Models\Sim $sim SIM card model to unblock
+   * @return bool Whether unblock request was successful
+   * @throws \ThingsMobilePHP\Remote\Exception\GenericErrorException
+   * @throws \ThingsMobilePHP\Remote\Exception\InputErrorException
+   * @throws \ThingsMobilePHP\Remote\Exception\SharedCreditAccountErrorException
+   * @throws \ThingsMobilePHP\Remote\Exception\SimErrorException
+   * @throws \ThingsMobilePHP\Remote\Exception\TooManyRequestsException
+   * @throws \ThingsMobilePHP\Remote\Exception\UserErrorException
+   */
   public function unblock(\ThingsMobilePHP\Models\Sim $sim) : bool
   {
     $client = $this->getHttpClient();
@@ -58,6 +96,17 @@ class Sim extends Endpoint
     return $this->parseNoneDataXml($req->getBody());
   }
 
+  /**
+   * Get status of a specified SIM
+   * @param \ThingsMobilePHP\Models\Sim $sim Sim model to get status of
+   * @return \ThingsMobilePHP\Models\Sim Sim model with all status information
+   * @throws \ThingsMobilePHP\Remote\Exception\GenericErrorException
+   * @throws \ThingsMobilePHP\Remote\Exception\InputErrorException
+   * @throws \ThingsMobilePHP\Remote\Exception\SharedCreditAccountErrorException
+   * @throws \ThingsMobilePHP\Remote\Exception\SimErrorException
+   * @throws \ThingsMobilePHP\Remote\Exception\TooManyRequestsException
+   * @throws \ThingsMobilePHP\Remote\Exception\UserErrorException
+   */
   public function status(\ThingsMobilePHP\Models\Sim $sim) : \ThingsMobilePHP\Models\Sim
   {
     $client = $this->getHttpClient();
@@ -71,6 +120,19 @@ class Sim extends Endpoint
     }
   }
 
+  /**
+   * List all SIM cards in account matching provided search parameters
+   * @param array $search Search parameters for the list method. Usable values are
+   *    - name: name of Sim
+   *    - tag: tag of Sim
+   * @return \ThingsMobilePHP\Models\Sim[]
+   * @throws \ThingsMobilePHP\Remote\Exception\GenericErrorException
+   * @throws \ThingsMobilePHP\Remote\Exception\InputErrorException
+   * @throws \ThingsMobilePHP\Remote\Exception\SharedCreditAccountErrorException
+   * @throws \ThingsMobilePHP\Remote\Exception\SimErrorException
+   * @throws \ThingsMobilePHP\Remote\Exception\TooManyRequestsException
+   * @throws \ThingsMobilePHP\Remote\Exception\UserErrorException
+   */
   public function list($search=[]) : array // search for name or tag
   {
     $client = $this->getHttpClient();
@@ -92,11 +154,20 @@ class Sim extends Endpoint
     }
   }
 
+  /**
+   * @param \ThingsMobilePHP\Models\Sim $sim
+   * @return bool
+   */
   public function update(\ThingsMobilePHP\Models\Sim $sim) : bool
   {
     // will combine 3.8 [name update], 3.9 [tag update], 3.10 [expiration date], 3.11 [traffic threshold], 3.15 [associate plan] API endpoints if the associated parameter is modified
   }
 
+  /**
+   * @param string $response HTTP response body
+   * @return \ThingsMobilePHP\Models\Sim[] Array of Sim objects
+   * @throws \Exception
+   */
   private function simModelFromXmlResponse($response) : array
   {
     $sims = [];
