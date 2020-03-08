@@ -4,6 +4,8 @@
 namespace ThingsMobilePHP;
 
 
+use ThingsMobilePHP\Remote\Endpoint\Sim;
+
 class Client
 {
   /**
@@ -36,7 +38,31 @@ class Client
    * Get base URL to API
    * @return string API base URL
    */
-  private function getApiBaseUrl() {
-    return 'https://' + $this->environment == 'dev' ? 'coll' : 'www' + '.thingsmobile.com/services/business-api/';
+  public function getApiBaseUrl() {
+    return 'https://' . (($this->environment == 'dev') ? 'coll' : 'www') . '.thingsmobile.com/services/business-api/';
+  }
+
+  /**
+   * @return string
+   */
+  public function getUsername() : string
+  {
+    return $this->username;
+  }
+
+  /**
+   * @return string
+   */
+  public function getToken() : string
+  {
+    return $this->token;
+  }
+
+  /**
+   * @return Sim SIM endpoints for API
+   */
+  public function sim() : Sim
+  {
+    return new Sim($this);
   }
 }
