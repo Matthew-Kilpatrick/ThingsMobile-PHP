@@ -1,7 +1,7 @@
 <?php
 
 
-namespace ThingsMobilePHP;
+namespace ThingsMobilePHP\Models;
 
 
 class SIM
