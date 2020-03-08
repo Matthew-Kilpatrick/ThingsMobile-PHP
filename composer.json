@@ -1,5 +1,5 @@
 {
-  "name": "ThingsMobilePHP/ThingsMobilePHP",
+  "name": "thingsmobile-php/thingsmobile-php",
   "type": "library",
   "description": "ThingsMobile API wrapper for PHP",
   "keywords": ["ThingsMobile", "API"],
