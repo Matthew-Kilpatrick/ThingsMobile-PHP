@@ -105,7 +105,7 @@ class Sim extends Endpoint
       $simData = $simData->sim;
       $sim = new \ThingsMobilePHP\Models\Sim();
       $sim->setActivationDate(new \DateTime((string)$simData->activationDate)) // TODO: if not activated, this is null
-      ->setBalance((int)$simData->balance)
+        ->setBalance((int)$simData->balance)
         ->setBlockSimAfterExpirationDate((bool)$simData->blockSimAfterExpirationDate)
         ->setBlockSimDaily((bool)$simData->blockSimDaily)
         ->setBlockSimMonthly((bool)$simData->blockSimMonthly)
