@@ -4,7 +4,9 @@
 namespace ThingsMobilePHP\Models;
 
 
-class Plan
+use ThingsMobilePHP\Model;
+
+class Plan extends Model
 {
 
 }
