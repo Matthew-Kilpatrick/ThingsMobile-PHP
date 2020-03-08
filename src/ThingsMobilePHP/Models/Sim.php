@@ -16,25 +16,28 @@ class Sim extends Model
    * @var string SIM ICCID (19 or 20 digits)
    */
   private $iccid;
+  /**
+   * @var DateTime
+   */
   private $activationDate;
   /**
    * @var int
    */
   private $balance;
   /**
-   * @var
+   * @var bool Whether to block sim after expiration date
    */
   private $blockSimAfterExpirationDate;
   /**
-   * @var
+   * @var bool Whether to block sim after exceeding daily traffic threshold
    */
   private $blockSimDaily;
   /**
-   * @var
+   * @var bool Whether to block sim after exceeding monthly traffic threshold
    */
   private $blockSimMonthly;
   /**
-   * @var
+   * @var bool Whether to block sim after exceeding total traffic threshold
    */
   private $blockSimTotal;
   /**
@@ -46,11 +49,11 @@ class Sim extends Model
    */
   private $dailyTrafficThreshold;
   /**
-   * @var \DateTime When SIM card expires
+   * @var DateTime When SIM card expires
    */
   private $expirationDate;
   /**
-   * @var \DateTime When SIM card last connected to network
+   * @var DateTime When SIM card last connected to network
    */
   private $lastConnectionDate;
   /**
@@ -128,6 +131,349 @@ class Sim extends Model
     $this->updateProperty('iccid', $iccid);
     return $this;
   }
+
+  /**
+   * @return mixed
+   */
+  public function getActivationDate()
+  {
+    return $this->activationDate;
+  }
+
+  /**
+   * @param mixed $activationDate
+   * @return Sim
+   */
+  public function setActivationDate($activationDate): self
+  {
+    $this->activationDate = $activationDate;
+    return $this;
+  }
+
+  /**
+   * @return int
+   */
+  public function getBalance(): int
+  {
+    return $this->balance;
+  }
+
+  /**
+   * @param int $balance
+   * @return Sim
+   */
+  public function setBalance(int $balance): self
+  {
+    $this->balance = $balance;
+    return $this;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getBlockSimAfterExpirationDate()
+  {
+    return $this->blockSimAfterExpirationDate;
+  }
+
+  /**
+   * @param mixed $blockSimAfterExpirationDate
+   * @return Sim
+   */
+  public function setBlockSimAfterExpirationDate($blockSimAfterExpirationDate): self
+  {
+    $this->blockSimAfterExpirationDate = $blockSimAfterExpirationDate;
+    return $this;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getBlockSimDaily()
+  {
+    return $this->blockSimDaily;
+  }
+
+  /**
+   * @param mixed $blockSimDaily
+   * @return Sim
+   */
+  public function setBlockSimDaily($blockSimDaily): self
+  {
+    $this->blockSimDaily = $blockSimDaily;
+    return $this;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getBlockSimMonthly()
+  {
+    return $this->blockSimMonthly;
+  }
+
+  /**
+   * @param mixed $blockSimMonthly
+   * @return Sim
+   */
+  public function setBlockSimMonthly($blockSimMonthly): self
+  {
+    $this->blockSimMonthly = $blockSimMonthly;
+    return $this;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getBlockSimTotal()
+  {
+    return $this->blockSimTotal;
+  }
+
+  /**
+   * @param mixed $blockSimTotal
+   * @return Sim
+   */
+  public function setBlockSimTotal($blockSimTotal): self
+  {
+    $this->blockSimTotal = $blockSimTotal;
+    return $this;
+  }
+
+  /**
+   * @return int
+   */
+  public function getDailyTraffic(): int
+  {
+    return $this->dailyTraffic;
+  }
+
+  /**
+   * @param int $dailyTraffic
+   * @return Sim
+   */
+  public function setDailyTraffic(int $dailyTraffic): self
+  {
+    $this->dailyTraffic = $dailyTraffic;
+    return $this;
+  }
+
+  /**
+   * @return int
+   */
+  public function getDailyTrafficThreshold(): int
+  {
+    return $this->dailyTrafficThreshold;
+  }
+
+  /**
+   * @param int $dailyTrafficThreshold
+   * @return Sim
+   */
+  public function setDailyTrafficThreshold(int $dailyTrafficThreshold): self
+  {
+    $this->dailyTrafficThreshold = $dailyTrafficThreshold;
+    return $this;
+  }
+
+  /**
+   * @return \DateTime
+   */
+  public function getExpirationDate(): \DateTime
+  {
+    return $this->expirationDate;
+  }
+
+  /**
+   * @param \DateTime $expirationDate
+   * @return Sim
+   */
+  public function setExpirationDate(\DateTime $expirationDate): self
+  {
+    $this->expirationDate = $expirationDate;
+    return $this;
+  }
+
+  /**
+   * @return \DateTime
+   */
+  public function getLastConnectionDate(): \DateTime
+  {
+    return $this->lastConnectionDate;
+  }
+
+  /**
+   * @param \DateTime $lastConnectionDate
+   * @return Sim
+   */
+  public function setLastConnectionDate(\DateTime $lastConnectionDate): self
+  {
+    $this->lastConnectionDate = $lastConnectionDate;
+    return $this;
+  }
+
+  /**
+   * @return int
+   */
+  public function getMonthlyTraffic(): int
+  {
+    return $this->monthlyTraffic;
+  }
+
+  /**
+   * @param int $monthlyTraffic
+   * @return Sim
+   */
+  public function setMonthlyTraffic(int $monthlyTraffic): self
+  {
+    $this->monthlyTraffic = $monthlyTraffic;
+    return $this;
+  }
+
+  /**
+   * @return int
+   */
+  public function getMonthlyTrafficThreshold(): int
+  {
+    return $this->monthlyTrafficThreshold;
+  }
+
+  /**
+   * @param int $monthlyTrafficThreshold
+   * @return Sim
+   */
+  public function setMonthlyTrafficThreshold(int $monthlyTrafficThreshold): self
+  {
+    $this->monthlyTrafficThreshold = $monthlyTrafficThreshold;
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getName(): string
+  {
+    return $this->name;
+  }
+
+  /**
+   * @param string $name
+   * @return Sim
+   */
+  public function setName(string $name): self
+  {
+    $this->name = $name;
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getPlan(): string
+  {
+    return $this->plan;
+  }
+
+  /**
+   * @param string $plan
+   * @return Sim
+   */
+  public function setPlan(string $plan): self
+  {
+    $this->plan = $plan;
+    return $this;
+  }
+
+  /**
+   * @return bool
+   */
+  public function isStatus(): bool
+  {
+    return $this->status;
+  }
+
+  /**
+   * @param bool $status
+   * @return Sim
+   */
+  public function setStatus(bool $status): self
+  {
+    $this->status = $status;
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getType(): string
+  {
+    return $this->type;
+  }
+
+  /**
+   * @param string $type
+   * @return Sim
+   */
+  public function setType(string $type): self
+  {
+    $this->type = $type;
+    return $this;
+  }
+
+  /**
+   * @return string
+   */
+  public function getTag(): string
+  {
+    return $this->tag;
+  }
+
+  /**
+   * @param string $tag
+   * @return Sim
+   */
+  public function setTag(string $tag): self
+  {
+    $this->tag = $tag;
+    return $this;
+  }
+
+  /**
+   * @return int
+   */
+  public function getTotalTraffic(): int
+  {
+    return $this->totalTraffic;
+  }
+
+  /**
+   * @param int $totalTraffic
+   * @return Sim
+   */
+  public function setTotalTraffic(int $totalTraffic): self
+  {
+    $this->totalTraffic = $totalTraffic;
+    return $this;
+  }
+
+  /**
+   * @return int
+   */
+  public function getTotalTrafficThreshold(): int
+  {
+    return $this->totalTrafficThreshold;
+  }
+
+  /**
+   * @param int $totalTrafficThreshold
+   * @return Sim
+   */
+  public function setTotalTrafficThreshold(int $totalTrafficThreshold): self
+  {
+    $this->totalTrafficThreshold = $totalTrafficThreshold;
+    return $this;
+  }
+
 
 
 
