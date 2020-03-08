@@ -1,0 +1,25 @@
+{
+  "name": "ThingsMobilePHP/ThingsMobilePHP",
+  "type": "library",
+  "description": "ThingsMobile API wrapper for PHP",
+  "keywords": ["ThingsMobile", "API"],
+  "homepage": "https://github.com/matthew-kilpatrick/ThingsMobile-PHP",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Matthew Kilpatrick",
+      "homepage": "https://matthewkilpatrick.uk",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.2.0",
+    "ext-simplexml": "*",
+    "guzzlehttp/guzzle": "^6"
+  },
+  "autoload": {
+    "psr-4": {
+      "ThingsMobilePHP\\": "src/ThingsMobilePHP/"
+    }
+  }
+}
