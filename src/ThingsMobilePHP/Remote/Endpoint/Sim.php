@@ -160,7 +160,81 @@ class Sim extends Endpoint
    */
   public function update(\ThingsMobilePHP\Models\Sim $sim) : bool
   {
-    // will combine 3.8 [name update], 3.9 [tag update], 3.10 [expiration date], 3.11 [traffic threshold], 3.15 [associate plan] API endpoints if the associated parameter is modified
+    // combines 3.8 [name update], 3.9 [tag update], 3.10 [expiration date], 3.11 [traffic threshold],
+    // 3.15 [associate plan] API endpoints if the associated parameter is modified
+    $client = $this->getHttpClient();
+    // Update SIM name if changed
+    if ($sim->hasUpdatedProperty('name'))
+    {
+      $body = $this->getSimAuthArray($sim);
+      $body['name'] = $sim->getName();
+      $req = $client->request('POST', $this->client->getApiBaseUrl() . 'updateSimName', [
+        'form_params' => $body
+      ]);
+      if ($this->parseNoneDataXml($req->getBody()))
+      {
+        $sim->unsetUpdatedProperty('name');
+      }
+    }
+    // Update tag if changed
+    if ($sim->hasUpdatedProperty('tag'))
+    {
+      $body = $this->getSimAuthArray($sim);
+      $body['tag'] = $sim->getTag();
+      $req = $client->request('POST', $this->client->getApiBaseUrl() . 'updateSimTag', [
+        'form_params' => $body
+      ]);
+      if ($this->parseNoneDataXml($req->getBody()))
+      {
+        $sim->unsetUpdatedProperty('tag');
+      }
+    }
+    // Update sim expiration date if changed
+    if ($sim->hasUpdatedProperty('expirationDate') || $sim->hasUpdatedProperty('blockSimAfterExpirationDate'))
+    {
+      $body = $this->getSimAuthArray($sim);
+      $body['expirationDate'] = $sim->getExpirationDate()->format('Y-m-d');
+      $body['blockSim'] = $sim->getBlockSimAfterExpirationDate() ? 1 : 0;
+      $req = $client->request('POST', $this->client->getApiBaseUrl() . 'setupSimExpirationDate', [
+        'form_params' => $body
+      ]);
+      if ($this->parseNoneDataXml($req->getBody()))
+      {
+        $sim->unsetUpdatedProperty('expirationDate');
+        $sim->unsetUpdatedProperty('blockSimAfterExpirationDate');
+      }
+    }
+    // Update sim traffic threshold data if changed
+    if (
+      $sim->hasUpdatedProperty('dailyTrafficThreshold') ||
+      $sim->hasUpdatedProperty('blockSimDaily') ||
+      $sim->hasUpdatedProperty('monthlyTrafficThreshold') ||
+      $sim->hasUpdatedProperty('blockSimMonthly') ||
+      $sim->hasUpdatedProperty('totalTrafficThreshold') ||
+      $sim->hasUpdatedProperty('blockSimTotal')
+    )
+    {
+      $body = $this->getSimAuthArray($sim);
+      $body['dailyLimit'] = $sim->getDailyTrafficThreshold();
+      $body['blockSimDaily'] = $sim->getBlockSimDaily() ? 1 : 0;
+      $body['monthlyLimit'] = $sim->getMonthlyTrafficThreshold();
+      $body['blockSimMonthly'] = $sim->getBlockSimMonthly() ? 1 : 0;
+      $body['totalLimit'] = $sim->getTotalTrafficThreshold();
+      $body['blockSimTotal'] = $sim->getBlockSimTotal() ? 1 : 0;
+      $req = $client->request('POST', $this->client->getApiBaseUrl() . 'setupSimTrafficThreshold', [
+        'form_params' => $body
+      ]);
+      if ($this->parseNoneDataXml($req->getBody()))
+      {
+        $sim->unsetUpdatedProperty('dailyTrafficThreshold');
+        $sim->unsetUpdatedProperty('blockSimDaily');
+        $sim->unsetUpdatedProperty('monthlyTrafficThreshold');
+        $sim->unsetUpdatedProperty('blockSimMonthly');
+        $sim->unsetUpdatedProperty('totalTrafficThreshold');
+        $sim->unsetUpdatedProperty('blockSimTotal');
+      }
+    }
+    return true;
   }
 
   /**

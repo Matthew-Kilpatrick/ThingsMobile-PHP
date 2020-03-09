@@ -171,7 +171,7 @@ class Sim extends Model
   /**
    * @return mixed
    */
-  public function getBlockSimAfterExpirationDate()
+  public function getBlockSimAfterExpirationDate() : bool
   {
     return $this->blockSimAfterExpirationDate;
   }
@@ -180,16 +180,17 @@ class Sim extends Model
    * @param mixed $blockSimAfterExpirationDate
    * @return Sim
    */
-  public function setBlockSimAfterExpirationDate($blockSimAfterExpirationDate): self
+  public function setBlockSimAfterExpirationDate(bool $blockSimAfterExpirationDate): self
   {
     $this->blockSimAfterExpirationDate = $blockSimAfterExpirationDate;
+    $this->updateProperty('blockSimAfterExpirationDate', $blockSimAfterExpirationDate);
     return $this;
   }
 
   /**
    * @return mixed
    */
-  public function getBlockSimDaily()
+  public function getBlockSimDaily() : bool
   {
     return $this->blockSimDaily;
   }
@@ -198,16 +199,17 @@ class Sim extends Model
    * @param mixed $blockSimDaily
    * @return Sim
    */
-  public function setBlockSimDaily($blockSimDaily): self
+  public function setBlockSimDaily(bool $blockSimDaily): self
   {
     $this->blockSimDaily = $blockSimDaily;
+    $this->updateProperty('blockSimDaily', $blockSimDaily);
     return $this;
   }
 
   /**
    * @return mixed
    */
-  public function getBlockSimMonthly()
+  public function getBlockSimMonthly() : bool
   {
     return $this->blockSimMonthly;
   }
@@ -216,16 +218,17 @@ class Sim extends Model
    * @param mixed $blockSimMonthly
    * @return Sim
    */
-  public function setBlockSimMonthly($blockSimMonthly): self
+  public function setBlockSimMonthly(bool $blockSimMonthly): self
   {
     $this->blockSimMonthly = $blockSimMonthly;
+    $this->updateProperty('blockSimMonthly', $blockSimMonthly);
     return $this;
   }
 
   /**
    * @return mixed
    */
-  public function getBlockSimTotal()
+  public function getBlockSimTotal() : bool
   {
     return $this->blockSimTotal;
   }
@@ -234,9 +237,10 @@ class Sim extends Model
    * @param mixed $blockSimTotal
    * @return Sim
    */
-  public function setBlockSimTotal($blockSimTotal): self
+  public function setBlockSimTotal(bool $blockSimTotal): self
   {
     $this->blockSimTotal = $blockSimTotal;
+    $this->updateProperty('blockSimTotal', $blockSimTotal);
     return $this;
   }
 
@@ -273,6 +277,7 @@ class Sim extends Model
   public function setDailyTrafficThreshold(int $dailyTrafficThreshold): self
   {
     $this->dailyTrafficThreshold = $dailyTrafficThreshold;
+    $this->updateProperty('dailyTrafficThreshold', $dailyTrafficThreshold);
     return $this;
   }
 
@@ -291,6 +296,7 @@ class Sim extends Model
   public function setExpirationDate(\DateTime $expirationDate): self
   {
     $this->expirationDate = $expirationDate;
+    $this->updateProperty('expirationDate', $expirationDate);
     return $this;
   }
 
@@ -345,6 +351,7 @@ class Sim extends Model
   public function setMonthlyTrafficThreshold(int $monthlyTrafficThreshold): self
   {
     $this->monthlyTrafficThreshold = $monthlyTrafficThreshold;
+    $this->updateProperty('monthlyTrafficThreshold', $monthlyTrafficThreshold);
     return $this;
   }
 
@@ -363,6 +370,7 @@ class Sim extends Model
   public function setName(string $name): self
   {
     $this->name = $name;
+    $this->updateProperty('name', $name);
     return $this;
   }
 
@@ -435,6 +443,7 @@ class Sim extends Model
   public function setTag(string $tag): self
   {
     $this->tag = $tag;
+    $this->updateProperty('tag', $tag);
     return $this;
   }
 
@@ -471,6 +480,7 @@ class Sim extends Model
   public function setTotalTrafficThreshold(int $totalTrafficThreshold): self
   {
     $this->totalTrafficThreshold = $totalTrafficThreshold;
+    $this->updateProperty('totalTrafficThreshold', $totalTrafficThreshold);
     return $this;
   }
 
