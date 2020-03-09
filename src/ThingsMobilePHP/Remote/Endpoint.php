@@ -56,6 +56,29 @@ class Endpoint
   }
 
   /**
+   * Get authentication (username+token) and SIM details (msisdn or iccid) array for making requests
+   * @param \ThingsMobilePHP\Models\Sim $sim
+   * @return array
+   */
+  protected function getSimGuzzleParams(\ThingsMobilePHP\Models\Sim $sim) : array
+  {
+    $arr = $this->getGuzzleParams();
+    if ($sim->hasUpdatedProperty('msisdn'))
+    {
+      $arr['form_params']['msisdn'] = $sim->getMsisdn();
+    }
+    else if ($sim->hasUpdatedProperty('iccid'))
+    {
+      $arr['form_params']['iccid'] = $sim->getIccid();
+    }
+    else
+    {
+      // TODO: no auth provided, so throw exception
+    }
+    return $arr;
+  }
+
+  /**
    * @param int $errorCode Error code of exception to throw
    * @param string $errorMessage Message of error
    */

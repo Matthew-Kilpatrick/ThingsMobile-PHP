@@ -5,6 +5,7 @@ namespace ThingsMobilePHP;
 
 
 use ThingsMobilePHP\Remote\Endpoint\Sim;
+use ThingsMobilePHP\Remote\Endpoint\Sms;
 
 class Client
 {
@@ -72,5 +73,13 @@ class Client
   public function sim() : Sim
   {
     return new Sim($this);
+  }
+
+  /**
+   * @return Sms SMS endpoint for API
+   */
+  public function sms() : Sms
+  {
+    return new Sms($this);
   }
 }
