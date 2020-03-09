@@ -59,6 +59,14 @@ class Client
   }
 
   /**
+   * @return string
+   */
+  public function getEnvironment() : string
+  {
+    return $this->environment;
+  }
+
+  /**
    * @return Sim SIM endpoints for API
    */
   public function sim() : Sim
