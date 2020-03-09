@@ -48,7 +48,8 @@ class Endpoint
         'token' => $this->client->getToken()
       ]
     ];
-    if ($this->client->getEnvironment() == 'dev') {
+    if ($this->client->getEnvironment() == Client::ENVIRONMENT_DEVELOPMENT) {
+      // Add HTTP basic auth credentials for accessing development environment
       $params['auth'] = [
         'testzero', '!c0ll4ud0!'
       ];

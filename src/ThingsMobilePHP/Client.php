@@ -9,6 +9,8 @@ use ThingsMobilePHP\Remote\Endpoint\Sms;
 
 class Client
 {
+  const ENVIRONMENT_PRODUCTION = 'www';
+  const ENVIRONMENT_DEVELOPMENT = 'coll';
   /**
    * @var string Username
    */
@@ -28,7 +30,7 @@ class Client
    * @param $token
    * @param string $environment Environment to connect to (dev/prod)
    */
-  public function __construct(string $username, string $token, string $environment='prod')
+  public function __construct(string $username, string $token, string $environment=self::ENVIRONMENT_PRODUCTION)
   {
     $this->username = $username;
     $this->token = $token;
@@ -40,7 +42,7 @@ class Client
    * @return string API base URL
    */
   public function getApiBaseUrl() {
-    return 'https://' . (($this->environment == 'dev') ? 'coll' : 'www') . '.thingsmobile.com/services/business-api/';
+    return 'https://' . $this->environment . '.thingsmobile.com/services/business-api/';
   }
 
   /**
