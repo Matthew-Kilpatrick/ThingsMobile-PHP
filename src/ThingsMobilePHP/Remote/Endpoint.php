@@ -5,6 +5,7 @@ namespace ThingsMobilePHP\Remote;
 
 
 use ThingsMobilePHP\Client;
+use ThingsMobilePHP\Exception\SimAuthenticationMissing;
 use ThingsMobilePHP\Remote\Exception\GenericErrorException;
 use ThingsMobilePHP\Remote\Exception\InputErrorException;
 use ThingsMobilePHP\Remote\Exception\SharedCreditAccountErrorException;
@@ -73,7 +74,7 @@ class Endpoint
     }
     else
     {
-      // TODO: no auth provided, so throw exception
+      throw new SimAuthenticationMissing();
     }
     return $arr;
   }
