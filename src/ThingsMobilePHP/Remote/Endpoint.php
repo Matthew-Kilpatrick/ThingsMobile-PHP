@@ -39,12 +39,20 @@ class Endpoint
   /**
    * @return array POST body for authentication
    */
-  protected function getAuthArray() : array
+  protected function getGuzzleParams() : array
   {
-    return [
-      'username' => $this->client->getUsername(),
-      'token' => $this->client->getToken()
+    $params =  [
+      'form_params' => [
+        'username' => $this->client->getUsername(),
+        'token' => $this->client->getToken()
+      ]
     ];
+    if ($this->client->getEnvironment() == 'dev') {
+      $params['auth'] = [
+        'testzero', '!c0ll4ud0!'
+      ];
+    }
+    return $params;
   }
 
   /**

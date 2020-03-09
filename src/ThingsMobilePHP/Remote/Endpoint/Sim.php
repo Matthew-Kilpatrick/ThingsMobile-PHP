@@ -13,16 +13,16 @@ class Sim extends Endpoint
    * @param \ThingsMobilePHP\Models\Sim $sim
    * @return array
    */
-  private function getSimAuthArray(\ThingsMobilePHP\Models\Sim $sim) : array
+  private function getSimGuzzleParams(\ThingsMobilePHP\Models\Sim $sim) : array
   {
-    $arr = $this->getAuthArray();
+    $arr = $this->getGuzzleParams();
     if ($sim->hasUpdatedProperty('msisdn'))
     {
-      $arr['msisdn'] = $sim->getMsisdn();
+      $arr['form_params']['msisdn'] = $sim->getMsisdn();
     }
     else if ($sim->hasUpdatedProperty('iccid'))
     {
-      $arr['iccid'] = $sim->getIccid();
+      $arr['form_params']['iccid'] = $sim->getIccid();
     }
     else
     {
@@ -45,12 +45,10 @@ class Sim extends Endpoint
   public function activate(\ThingsMobilePHP\Models\Sim $sim) : bool
   {
     $client = $this->getHttpClient();
-    $body = $this->getAuthArray();
-    $body['msisdn'] = $sim->getMsisdn();
-    $body['simBarcode'] = $sim->getIccid();
-    $req = $client->request('POST', $this->client->getApiBaseUrl() . 'activateSim', [
-      'form_params' => $body
-    ]);
+    $body = $this->getSimGuzzleParams($sim);
+    $body['form_params']['msisdn'] = $sim->getMsisdn();
+    $body['form_params']['simBarcode'] = $sim->getIccid();
+    $req = $client->request('POST', $this->client->getApiBaseUrl() . 'activateSim', $body);
     return $this->parseNoneDataXml($req->getBody());
   }
 
@@ -68,10 +66,8 @@ class Sim extends Endpoint
   public function block(\ThingsMobilePHP\Models\Sim $sim) : bool
   {
     $client = $this->getHttpClient();
-    $body = $this->getSimAuthArray($sim);
-    $req = $client->request('POST', $this->client->getApiBaseUrl() . 'blockSim', [
-      'form_params' => $body
-    ]);
+    $body = $this->getSimGuzzleParams($sim);
+    $req = $client->request('POST', $this->client->getApiBaseUrl() . 'blockSim', $body);
     return $this->parseNoneDataXml($req->getBody());
   }
 
@@ -89,10 +85,8 @@ class Sim extends Endpoint
   public function unblock(\ThingsMobilePHP\Models\Sim $sim) : bool
   {
     $client = $this->getHttpClient();
-    $body = $this->getSimAuthArray($sim);
-    $req = $client->request('POST', $this->client->getApiBaseUrl() . 'unblockSim', [
-      'form_params' => $body
-    ]);
+    $body = $this->getSimGuzzleParams($sim);
+    $req = $client->request('POST', $this->client->getApiBaseUrl() . 'unblockSim', $body);
     return $this->parseNoneDataXml($req->getBody());
   }
 
@@ -110,10 +104,8 @@ class Sim extends Endpoint
   public function status(\ThingsMobilePHP\Models\Sim $sim) : \ThingsMobilePHP\Models\Sim
   {
     $client = $this->getHttpClient();
-    $body = $this->getSimAuthArray($sim);
-    $req = $client->request('POST', $this->client->getApiBaseUrl() . 'simStatus', [
-      'form_params' => $body
-    ]);
+    $body = $this->getSimGuzzleParams($sim);
+    $req = $client->request('POST', $this->client->getApiBaseUrl() . 'simStatus', $body);
     if ($this->parseNoneDataXml($req->getBody()))
     {
       return $this->simModelFromXmlResponse($req->getBody())[0];
@@ -136,18 +128,16 @@ class Sim extends Endpoint
   public function list($search=[]) : array // search for name or tag
   {
     $client = $this->getHttpClient();
-    $body = $this->getAuthArray();
+    $body = $this->getGuzzleParams();
     if (isset($search['name']))
     {
-      $body['name'] = $search['name'];
+      $body['form_params']['name'] = $search['name'];
     }
     if (isset($serach['tag']))
     {
-      $body['tag'] = $search['tag'];
+      $body['form_params']['tag'] = $search['tag'];
     }
-    $req = $client->request('POST', $this->client->getApiBaseUrl() . 'simList', [
-      'form_params' => $body
-    ]);
+    $req = $client->request('POST', $this->client->getApiBaseUrl() . 'simList', $body);
     if ($this->parseNoneDataXml($req->getBody()))
     {
       return $this->simModelFromXmlResponse($req->getBody());
@@ -166,11 +156,9 @@ class Sim extends Endpoint
     // Update SIM name if changed
     if ($sim->hasUpdatedProperty('name'))
     {
-      $body = $this->getSimAuthArray($sim);
-      $body['name'] = $sim->getName();
-      $req = $client->request('POST', $this->client->getApiBaseUrl() . 'updateSimName', [
-        'form_params' => $body
-      ]);
+      $body = $this->getSimGuzzleParams($sim);
+      $body['form_params']['name'] = $sim->getName();
+      $req = $client->request('POST', $this->client->getApiBaseUrl() . 'updateSimName', $body);
       if ($this->parseNoneDataXml($req->getBody()))
       {
         $sim->unsetUpdatedProperty('name');
@@ -179,11 +167,9 @@ class Sim extends Endpoint
     // Update tag if changed
     if ($sim->hasUpdatedProperty('tag'))
     {
-      $body = $this->getSimAuthArray($sim);
-      $body['tag'] = $sim->getTag();
-      $req = $client->request('POST', $this->client->getApiBaseUrl() . 'updateSimTag', [
-        'form_params' => $body
-      ]);
+      $body = $this->getSimGuzzleParams($sim);
+      $body['form_params']['tag'] = $sim->getTag();
+      $req = $client->request('POST', $this->client->getApiBaseUrl() . 'updateSimTag', $body);
       if ($this->parseNoneDataXml($req->getBody()))
       {
         $sim->unsetUpdatedProperty('tag');
@@ -192,12 +178,10 @@ class Sim extends Endpoint
     // Update sim expiration date if changed
     if ($sim->hasUpdatedProperty('expirationDate') || $sim->hasUpdatedProperty('blockSimAfterExpirationDate'))
     {
-      $body = $this->getSimAuthArray($sim);
-      $body['expirationDate'] = $sim->getExpirationDate()->format('Y-m-d');
-      $body['blockSim'] = $sim->getBlockSimAfterExpirationDate() ? 1 : 0;
-      $req = $client->request('POST', $this->client->getApiBaseUrl() . 'setupSimExpirationDate', [
-        'form_params' => $body
-      ]);
+      $body = $this->getSimGuzzleParams($sim);
+      $body['form_params']['expirationDate'] = $sim->getExpirationDate()->format('Y-m-d');
+      $body['form_params']['blockSim'] = $sim->getBlockSimAfterExpirationDate() ? 1 : 0;
+      $req = $client->request('POST', $this->client->getApiBaseUrl() . 'setupSimExpirationDate', $body);
       if ($this->parseNoneDataXml($req->getBody()))
       {
         $sim->unsetUpdatedProperty('expirationDate');
@@ -214,16 +198,14 @@ class Sim extends Endpoint
       $sim->hasUpdatedProperty('blockSimTotal')
     )
     {
-      $body = $this->getSimAuthArray($sim);
-      $body['dailyLimit'] = $sim->getDailyTrafficThreshold();
-      $body['blockSimDaily'] = $sim->getBlockSimDaily() ? 1 : 0;
-      $body['monthlyLimit'] = $sim->getMonthlyTrafficThreshold();
-      $body['blockSimMonthly'] = $sim->getBlockSimMonthly() ? 1 : 0;
-      $body['totalLimit'] = $sim->getTotalTrafficThreshold();
-      $body['blockSimTotal'] = $sim->getBlockSimTotal() ? 1 : 0;
-      $req = $client->request('POST', $this->client->getApiBaseUrl() . 'setupSimTrafficThreshold', [
-        'form_params' => $body
-      ]);
+      $body = $this->getSimGuzzleParams($sim);
+      $body['form_params']['dailyLimit'] = $sim->getDailyTrafficThreshold();
+      $body['form_params']['blockSimDaily'] = $sim->getBlockSimDaily() ? 1 : 0;
+      $body['form_params']['monthlyLimit'] = $sim->getMonthlyTrafficThreshold();
+      $body['form_params']['blockSimMonthly'] = $sim->getBlockSimMonthly() ? 1 : 0;
+      $body['form_params']['totalLimit'] = $sim->getTotalTrafficThreshold();
+      $body['form_params']['blockSimTotal'] = $sim->getBlockSimTotal() ? 1 : 0;
+      $req = $client->request('POST', $this->client->getApiBaseUrl() . 'setupSimTrafficThreshold', $body);
       if ($this->parseNoneDataXml($req->getBody()))
       {
         $sim->unsetUpdatedProperty('dailyTrafficThreshold');
