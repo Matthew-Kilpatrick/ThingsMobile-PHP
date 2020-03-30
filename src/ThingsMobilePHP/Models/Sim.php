@@ -92,7 +92,10 @@ class Sim extends Model
    * @var int Total traffic usage threshold in bytes
    */
   private $totalTrafficThreshold;
-  // TODO: CDRs
+  /**
+   * @var Cdr[] List of CDR objects
+   */
+  private $cdrs = [];
 
   /**
    * @return string MSISDN of sim card
@@ -484,7 +487,21 @@ class Sim extends Model
     return $this;
   }
 
+  /**
+   * @return Cdr[]
+   */
+  public function getCdrs() : array
+  {
+    return $this->cdrs;
+  }
 
-
-
+  /**
+   * @param Cdr $cdr
+   * @return Sim
+   */
+  public function addCdr(Cdr $cdr) : self
+  {
+    $this->cdrs[] = $cdr;
+    return $this;
+  }
 }

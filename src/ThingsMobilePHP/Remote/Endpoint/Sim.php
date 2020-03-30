@@ -4,6 +4,7 @@
 namespace ThingsMobilePHP\Remote\Endpoint;
 
 
+use ThingsMobilePHP\Models\Cdr;
 use ThingsMobilePHP\Remote\Endpoint;
 
 class Sim extends Endpoint
@@ -103,7 +104,7 @@ class Sim extends Endpoint
    * @throws \ThingsMobilePHP\Remote\Exception\TooManyRequestsException
    * @throws \ThingsMobilePHP\Remote\Exception\UserErrorException
    */
-  public function list($search=[]) : array // search for name or tag
+  public function list(array $search=[]) : array // search for name or tag
   {
     $client = $this->getHttpClient();
     $body = $this->getGuzzleParams();
@@ -229,6 +230,19 @@ class Sim extends Endpoint
         ->setTag((string)$simData->tag)
         ->setTotalTraffic((int)$simData->totalTraffic)
         ->setTotalTrafficThreshold((int)$simData->totalTrafficThreshold);
+      foreach ($simData->cdrs as $cdrs) {
+        foreach ($cdrs->cdr as $cdr) {
+          $cdrObject = new Cdr();
+          $cdrObject->setCountry($cdr->cdrCountry)
+            ->setStartDate(new \DateTime($cdr->cdrDateStart))
+            ->setEndDate(new \DateTime($cdr->cdrDateEnd))
+            ->setImsi((int)$cdr->cdrImsi)
+            ->setNetwork($cdr->cdrNetwork)
+            ->setOperator($cdr->cdrOperator)
+            ->setTraffic((int)$cdr->cdrTraffic);
+          $sim->addCdr($cdrObject);
+        }
+      }
       $sims[] = $sim;
     }
     return $sims;
